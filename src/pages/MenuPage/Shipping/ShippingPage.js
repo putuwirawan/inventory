@@ -45,8 +45,6 @@ const ShippingPage = () => {
   };
   useEffect(() => {
     getStore();
- 
-    
   });
 
   return (
@@ -76,14 +74,14 @@ const ShippingPage = () => {
       </View>
 
       <View style={styles.section}>
-        <Picker
+        {/* <Picker
           mode="dropdown"
           selectedValue={shippngProces}
           style={{width: 150, color: colors.text}}
           onValueChange={(itemValue) => setShippingProces(itemValue.value)}>
           <Picker.Item label=" On Delivery" value={1} />
           <Picker.Item label="Delivered" value={2} />
-        </Picker>
+        </Picker> */}
         {storeState === null ? (
           <View style={{justifyContent: 'center', alignItems: 'center'}}>
             <ActivityIndicator size="large" />
@@ -99,7 +97,7 @@ const ShippingPage = () => {
             selectedItemColor="#33654C"
             containerStyle={{width: '40%'}}
             onChangeText={(selectValue) => {
-             console.log(selectValue)
+              console.log(selectValue);
               setStoreState(selectValue);
             }}
           />
