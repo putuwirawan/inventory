@@ -6,7 +6,7 @@ const Detail = ({navigation}) =>{
 
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Details Screen</Text>
+      <Text>detail Screen</Text>
 
       <Button
         title="Go to Details... again"

@@ -2,13 +2,18 @@
 import React from 'react';
 import {Text, Button, View, StyleSheet, StatusBar} from 'react-native';
 import {useTheme} from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 const Home = ({navigation}) => {
   const {colors} = useTheme();
   const theme = useTheme();
   return (
     <View style={style.container}>
-      <StatusBar backgroundColor="#009387" barStyle={theme.dark ? 'light-content' : 'dark-content'} />
+      <StatusBar
+        backgroundColor="#009387"
+        barStyle={theme.dark ? 'light-content' : 'dark-content'}
+      />
       <Text style={{color: colors.text}}>Home Screen</Text>
       <Button
         title="Go to Details"

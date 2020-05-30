@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   SectionList,
   StyleSheet,
-  Platform,
+  TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
@@ -17,10 +17,11 @@ import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-material-dropdown';
 import {Picker} from '@react-native-community/picker';
 import {FlatList} from 'react-native-gesture-handler';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import styles from './Style';
 
-const ShippingPage = () => {
-  const [isLoadingShipping, setIsLoadingShipping] = useState(true);
+const ShippingPage = ({navigation}) => {
+  const [isLoadingShipping, setIsLoadingShipping] = useState(false);
   const {colors} = useTheme();
   const [shippingProces, setShippingProces] = useState(1);
   const [storeDatas, setStoreDatas] = useState([]);
@@ -47,6 +48,7 @@ const ShippingPage = () => {
       .then(async (datas) => {
         let data = [];
         if (datas.length) {
+          await setSelectedStore(datas[0].Id);
           await datas.map(
             async (item) => await data.push({value: item.Id, label: item.Code}),
           );
@@ -100,45 +102,64 @@ const ShippingPage = () => {
   const RenderItem = ({item}) => {
     return (
       <View
+        key={item.Id}
         style={[
           styles.action,
           {borderBottomWidth: 1, borderBottomColor: '#3db8d1'},
         ]}>
-        <View style={{flex:1}}>
-          <Text style={[styles.textSubHeader, {color: colors.text, fontStyle:'italic'}]}>
+        <View style={{flex: 1}}>
+          <Text
+            style={[
+              styles.textSubHeader,
+              {color: colors.text, fontStyle: 'italic'},
+            ]}>
             Shipping : {item.ShippingNumber}
           </Text>
           <Text style={{color: colors.text}}>Sender: {item.Sender}</Text>
           <Text style={{color: colors.text}}>Courir: {item.Courier}</Text>
         </View>
-        <View style={{flex:1,backgroundColor:'blue', alignItems:'flex-end'}}>
-          <Text style={[styles.textSubHeader, {color: colors.text}]}>
-            To:  {item.Store}
-          </Text>
+        <View style={{flex: 1, alignItems: 'flex-end', paddingRight: 5}}>
+          <Text style={[styles.textSubHeader, {color: colors.text}]}></Text>
           <Text style={{color: colors.text}}> {item.TotalQty} Pcs</Text>
           <Text style={{color: colors.text}}>
             By : {item.StrShipmentMethod}
           </Text>
         </View>
-        <View style={{width:20, backgroundColor:'red'}}  >
-          <Text>kopi</Text>
+        <View style={{width: 30, justifyContent: 'center', padding: 2}}>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('DetailShipping', {itemDetail: item});
+            }}>
+            <MaterialIcons
+              name="navigate-next"
+              color={colors.text}
+              size={40}
+              style={{alignItems: 'center'}}
+            />
+          </TouchableOpacity>
         </View>
       </View>
     );
   };
   async function initData() {
     await getStore();
-    await getShipping();
+    // await getShipping();
   }
   useEffect(() => {
     initData();
   }, []);
+
   useEffect(() => {
     getShipping();
   }, [shippingProces, selectedStore, textSearch]);
   return (
     <View style={styles.container}>
-      <View style={{marginBottom:10, borderBottomWidth:2, borderBottomColor:'#82b393'}}>
+      <View
+        style={{
+          marginBottom: 10,
+          borderBottomWidth: 2,
+          borderBottomColor: '#82b393',
+        }}>
         <View style={styles.section}>
           <FontAwesome
             name="search"
@@ -164,7 +185,7 @@ const ShippingPage = () => {
               await setShippingProces(itemSelect);
             }}>
             <Picker.Item label=" On Delivery" value={1} />
-            <Picker.Item label="Delivered" value={2} />
+            <Picker.Item label="Arrived" value={2} />
           </Picker>
           <Dropdown
             value="Select Store"
@@ -185,9 +206,10 @@ const ShippingPage = () => {
       </View>
 
       <View style={styles.container}>
-        <View>
-          <Text>{shippingProces}</Text>
-          <Text>total Count {totalCount}</Text>
+        <View style={{backgroundColor:'#1273DE', height:50, padding:10}}>
+          <Text style={{color: '#AF109F', fontSize: 17, fontWeight: 'bold'}}>
+            Total Record : {totalCount ==0 ? 'Data Not Found' : totalCount}
+          </Text>
         </View>
 
         <SafeAreaView style={styles.container}>
@@ -203,7 +225,7 @@ const ShippingPage = () => {
             <FlatList
               data={shippingDatas}
               renderItem={RenderItem}
-              keyExtractor={(item) => item.id}
+              keyExtractor={(item) => item.Id}
             />
           )}
         </SafeAreaView>
@@ -214,33 +236,3 @@ const ShippingPage = () => {
 
 export default ShippingPage;
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//   },
-//   section: {flexDirection: 'row', alignItems: 'center', marginRight: 20, justifyContent: 'space-between'},
-//   textSearch: {
-//     flex: 1,
-//     marginTop: Platform.OS === 'ios' ? 0 : 2,
-//     paddingLeft: 5,
-//     color: '#05375a',
-//     height: 25,
-//   },
-//   textHeader: {
-//     fontSize: 17,
-//     fontWeight: 'bold',
-//   },
-//   action: {
-//     justifyContent: 'space-between',
-//     flexDirection: 'row',
-//     marginTop: 10,
-//     borderBottomWidth: 1,
-//     borderBottomColor: '#f2f2f2',
-//     padding: 10,
-
-//     borderRadius: 10,
-//   },
-//   dropdown: {
-//     width: '40%',
-//   },
-// });

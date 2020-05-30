@@ -21,6 +21,7 @@ import DrawerContent from './pages/Drawer';
 import LoginStackScreen from './pages/Login';
 import ProfileStackScreen from './pages/MenuPage/Profile';
 import ShippingStackScreen from './pages/MenuPage/Shipping';
+
 const Drawer = createDrawerNavigator();
 
 function App() {
@@ -149,6 +150,7 @@ function App() {
               <Drawer.Screen name="HomeTab" component={MainTabScreen} />
               <Drawer.Screen name="Profile" component={ProfileStackScreen} />
               <Drawer.Screen name="Shipping" component={ShippingStackScreen} />
+              {/* <Drawer.Screen name="Shipping" component={ShippingStackScreen} /> */}
             </Drawer.Navigator>
           ) : (
             <LoginStackScreen />

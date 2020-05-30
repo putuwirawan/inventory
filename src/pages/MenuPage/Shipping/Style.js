@@ -1,4 +1,4 @@
-import {StyleSheet, Dimensions,Platform} from 'react-native';
+import {StyleSheet, Dimensions, Platform} from 'react-native';
 
 const {height} = Dimensions.get('screen');
 const height_logo = height * 0.2;
@@ -30,6 +30,26 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     flexDirection: 'row',
     margin: 10,
+  },
+  listDetail: {
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingBottom: 5,
+    marginBottom: 5,
+    borderBottomWidth: 2,
+    borderBottomColor: '#4C504E',
+  },
+  listDetail1: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 5,
+  },
+  box: {
+    flex: 1,
+    paddingHorizontal: 5,
+    borderWidth: 1,
+    borderColor:'#1EDC2D'
+  
   },
   dropdown: {
     width: '40%',

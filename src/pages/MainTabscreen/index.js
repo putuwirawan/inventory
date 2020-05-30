@@ -7,6 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import Home from '../Home';
 import SettingPage from './SettingPage';
+import Detail from '../Detail';
 
 const HomeStack = createStackNavigator();
 const SettingStack = createStackNavigator();
@@ -53,6 +54,7 @@ const HomeStackScreen = ({navigation}) => (
         ),
       }}
     />
+    <HomeStack.Screen name="Detail" component={Detail}></HomeStack.Screen>
   </HomeStack.Navigator>
 );
 
@@ -64,7 +66,7 @@ const SettingStackScreen = ({navigation}) => (
       headerTitleStyle: {fontWeight: 'bold'},
     }}>
     <SettingStack.Screen
-      name="Detail"
+      name="Setting"
       component={SettingPage}
       options={{
         headerLeft: () => (
