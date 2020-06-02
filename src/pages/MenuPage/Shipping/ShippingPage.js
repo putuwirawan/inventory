@@ -11,17 +11,21 @@ import {
 } from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
-// import {Dropdown} from 'react-native-material-dropdown';
 import {TextInput} from 'react-native-paper';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-material-dropdown';
 import {Picker} from '@react-native-community/picker';
 import {FlatList} from 'react-native-gesture-handler';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import {Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+// import {Button} from 'react-native-elements';
 import styles from './Style';
 
 const ShippingPage = ({navigation}) => {
   const [isLoadingShipping, setIsLoadingShipping] = useState(false);
+  // const [isNext, setIsNext] = useState(false);
+  // const [isPreview, setIsPreview] = useState(false);
   const {colors} = useTheme();
   const [shippingProces, setShippingProces] = useState(1);
   const [storeDatas, setStoreDatas] = useState([]);
@@ -29,7 +33,8 @@ const ShippingPage = ({navigation}) => {
   const [totalCount, setTotalCount] = useState(0);
   const [selectedStore, setSelectedStore] = useState('');
   const [textSearch, setTextSearch] = useState('');
-
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(0);
   const getStore = async () => {
     const token = await AsyncStorage.getItem('userToken');
     await fetch(
@@ -48,10 +53,10 @@ const ShippingPage = ({navigation}) => {
       .then(async (datas) => {
         let data = [];
         if (datas.length) {
-          await setSelectedStore(datas[0].Id);
           await datas.map(
             async (item) => await data.push({value: item.Id, label: item.Code}),
           );
+          await setSelectedStore(datas[0].Id);
         }
         await setStoreDatas(data);
       })
@@ -75,8 +80,8 @@ const ShippingPage = ({navigation}) => {
         },
         body: JSON.stringify({
           search: textSearch,
-          take: '10',
-          skip: '0',
+          take: '5',
+          skip: page * 5,
           sort: 'Courier',
           order: 'true',
         }),
@@ -84,7 +89,8 @@ const ShippingPage = ({navigation}) => {
     )
       .then((response) => response.json())
       .then(async (datas) => {
-        setTotalCount(datas.totalCount);
+        setTotalCount(datas.totalFiltered);
+        setTotal(datas.totalCount);
         let data = [];
         if (datas.data.length) {
           await datas.data.map((item) => {
@@ -130,13 +136,58 @@ const ShippingPage = ({navigation}) => {
             onPress={() => {
               navigation.navigate('DetailShipping', {itemDetail: item});
             }}>
-            <MaterialIcons
-              name="navigate-next"
+            <Icon
+              name="caret-right"
               color={colors.text}
               size={40}
               style={{alignItems: 'center'}}
             />
           </TouchableOpacity>
+        </View>
+      </View>
+    );
+  };
+  const FotterComponent = () => {
+    return (
+      <View style={{flexDirection: 'row'}}>
+        <View style={{flex: 1, marginRight: 5}}>
+          <Button
+            icon={
+              <Icon
+                name="angle-double-left"
+                size={25}
+                style={{marginHorizontal: 10}}
+                color="#9ce067"
+              />
+            }
+            title="PreView"
+            titleStyle={{fontSize: 20}}
+            buttonStyle={{backgroundColor: '#138037'}}
+            disabled={page <= 0 ? true : false}
+            onPress={() => {
+              if (page > 0) setPage(page - 1);
+            }}
+          />
+        </View>
+        <View style={{flex: 1, marginLeft: 5}}>
+          <Button
+            icon={
+              <Icon
+                name="angle-double-right"
+                size={25}
+                style={{marginHorizontal: 10}}
+                color="#9ce067"
+              />
+            }
+            title="Next"
+            iconRight
+            titleStyle={{fontSize: 20}}
+            buttonStyle={{backgroundColor: '#138037'}}
+            disabled={totalCount / 5 > page + 1 ? false : true}
+            onPress={() => {
+              if (page + 1 < totalCount / 5) setPage(page + 1);
+            }}
+          />
         </View>
       </View>
     );
@@ -151,7 +202,7 @@ const ShippingPage = ({navigation}) => {
 
   useEffect(() => {
     getShipping();
-  }, [shippingProces, selectedStore, textSearch]);
+  }, [shippingProces, selectedStore, textSearch, page]);
   return (
     <View style={styles.container}>
       <View
@@ -160,22 +211,34 @@ const ShippingPage = ({navigation}) => {
           borderBottomWidth: 2,
           borderBottomColor: '#82b393',
         }}>
-        <View style={styles.section}>
-          <FontAwesome
-            name="search"
-            color={colors.text}
-            size={15}
-            style={{paddingRight: 5, alignContent: 'center'}}
-          />
+        <View style={styles.action}>
+          <View>
+            <Button
+              icon={<Icon name="refresh" color="#8ed9f5" size={20} />}
+              onPress={() => {
+                getShipping()
+              }}
+            />
+          </View>
+          <View style={styles.section}>
+            <Icon
+              name="search"
+              color={colors.text}
+              size={15}
+              style={{paddingRight: 5, alignContent: 'center'}}
+            />
 
-          <TextInput
-            placeholder="Search"
-            style={[styles.textSearch, {color: colors.text, width: 250}]}
-            onChangeText={(val) => {
-              setTextSearch(val);
-            }}
-          />
+            <TextInput
+              placeholder="Search"
+              style={[styles.textSearch, {color: colors.text, width: 250}]}
+              onChangeText={(val) => {
+                setTextSearch(val);
+                setPage(0);
+              }}
+            />
+          </View>
         </View>
+
         <View style={styles.action}>
           <Picker
             mode="dropdown"
@@ -206,10 +269,30 @@ const ShippingPage = ({navigation}) => {
       </View>
 
       <View style={styles.container}>
-        <View style={{backgroundColor:'#1273DE', height:50, padding:10}}>
-          <Text style={{color: '#AF109F', fontSize: 17, fontWeight: 'bold'}}>
-            Total Record : {totalCount ==0 ? 'Data Not Found' : totalCount}
+        <View
+          style={{
+            backgroundColor: '#684f8f',
+            height: 50,
+            padding: 10,
+            flexDirection: 'row',
+            justifyContent: 'space-between',
+          }}>
+          <Text style={{color: '#c9f2bb', fontSize: 20, fontWeight: 'bold'}}>
+            Total Record : {total}
           </Text>
+          {totalCount <= 0 ? null : (
+            <Text
+              style={{
+                color: '#f2e3b8',
+                fontSize: 20,
+                fontWeight: 'bold',
+                fontStyle: 'italic',
+              }}>
+              {page * 5 + 1} -{' '}
+              {totalCount > (page + 1) * 5 ? (page + 1) * 5 : totalCount} Of{' '}
+              {totalCount} Filtered
+            </Text>
+          )}
         </View>
 
         <SafeAreaView style={styles.container}>
@@ -226,6 +309,7 @@ const ShippingPage = ({navigation}) => {
               data={shippingDatas}
               renderItem={RenderItem}
               keyExtractor={(item) => item.Id}
+              ListFooterComponent={FotterComponent}
             />
           )}
         </SafeAreaView>
@@ -235,4 +319,3 @@ const ShippingPage = ({navigation}) => {
 };
 
 export default ShippingPage;
-

@@ -24,7 +24,7 @@ export default function DetailShipping({route, navigation}) {
   }; 
   const RenderItemDo = ({item, index}) => {
     return (
-      <View key={index}>
+      <View key={item.Id}>
         <View style={[styles.action]}>
           <View style={{flex: 1}}>
             <Text style={{color: colors.text}}>Package : {index + 1}</Text>
@@ -188,7 +188,7 @@ export default function DetailShipping({route, navigation}) {
         <FlatList
           data={dataDo}
           renderItem={RenderItemDo}
-          keyExtractor={(item) => item.name}
+          keyExtractor={(item) => item.Id}
         />
       </SafeAreaView>
     </View>
