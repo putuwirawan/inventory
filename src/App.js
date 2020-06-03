@@ -21,6 +21,30 @@ import DrawerContent from './pages/Drawer';
 import LoginStackScreen from './pages/Login';
 import ProfileStackScreen from './pages/MenuPage/Profile';
 import ShippingStackScreen from './pages/MenuPage/Shipping';
+import ReportStackScreen from './pages/MenuPage/Report';
+
+// import {YellowBox} from 'react-native';
+// import _ from 'lodash';
+
+// YellowBox.ignoreWarnings([
+//   'componentWillReceiveProps',
+//   'componentWillUpdate',
+//   'Require cycle',
+// ]);
+// const _console = _.clone(console);
+// console.warn = (message) => {
+//   if (message.indexOf('componentWillReceiveProps') <= -1) {
+//     _console.warn(message);
+//   }
+//   if (message.indexOf('componentWillUpdate') <= -1) {
+//     _console.warn(message);
+//   }
+//   if (message.indexOf('Require cycle') <= -1) {
+//     _console.warn(message);
+//   }
+// };
+
+
 
 const Drawer = createDrawerNavigator();
 
@@ -150,7 +174,7 @@ function App() {
               <Drawer.Screen name="HomeTab" component={MainTabScreen} />
               <Drawer.Screen name="Profile" component={ProfileStackScreen} />
               <Drawer.Screen name="Shipping" component={ShippingStackScreen} />
-              {/* <Drawer.Screen name="Shipping" component={ShippingStackScreen} /> */}
+              <Drawer.Screen name="Report" component={ReportStackScreen} />
             </Drawer.Navigator>
           ) : (
             <LoginStackScreen />

@@ -1,31 +1,21 @@
 /* eslint-disable prettier/prettier */
 import React, {useState, useEffect} from 'react';
-import {
-  View,
-  Text,
-  SafeAreaView,
-  SectionList,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-} from 'react-native';
+import {View, Text} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import AsyncStorage from '@react-native-community/async-storage';
 import {TextInput} from 'react-native-paper';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import {Dropdown} from 'react-native-material-dropdown';
 import {Picker} from '@react-native-community/picker';
-import {FlatList} from 'react-native-gesture-handler';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import RenderListItem from './Componet';
 
 // import {Button} from 'react-native-elements';
 import styles from './Style';
 
 const ShippingPage = ({navigation}) => {
   const [isLoadingShipping, setIsLoadingShipping] = useState(false);
-  // const [isNext, setIsNext] = useState(false);
-  // const [isPreview, setIsPreview] = useState(false);
+
   const {colors} = useTheme();
   const [shippingProces, setShippingProces] = useState(1);
   const [storeDatas, setStoreDatas] = useState([]);
@@ -35,6 +25,7 @@ const ShippingPage = ({navigation}) => {
   const [textSearch, setTextSearch] = useState('');
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(0);
+
   const getStore = async () => {
     const token = await AsyncStorage.getItem('userToken');
     await fetch(
@@ -105,93 +96,6 @@ const ShippingPage = ({navigation}) => {
       });
   };
 
-  const RenderItem = ({item}) => {
-    return (
-      <View
-        key={item.Id}
-        style={[
-          styles.action,
-          {borderBottomWidth: 1, borderBottomColor: '#3db8d1'},
-        ]}>
-        <View style={{flex: 1}}>
-          <Text
-            style={[
-              styles.textSubHeader,
-              {color: colors.text, fontStyle: 'italic'},
-            ]}>
-            Shipping : {item.ShippingNumber}
-          </Text>
-          <Text style={{color: colors.text}}>Sender: {item.Sender}</Text>
-          <Text style={{color: colors.text}}>Courir: {item.Courier}</Text>
-        </View>
-        <View style={{flex: 1, alignItems: 'flex-end', paddingRight: 5}}>
-          <Text style={[styles.textSubHeader, {color: colors.text}]}></Text>
-          <Text style={{color: colors.text}}> {item.TotalQty} Pcs</Text>
-          <Text style={{color: colors.text}}>
-            By : {item.StrShipmentMethod}
-          </Text>
-        </View>
-        <View style={{width: 30, justifyContent: 'center', padding: 2}}>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('DetailShipping', {itemDetail: item});
-            }}>
-            <Icon
-              name="caret-right"
-              color={colors.text}
-              size={40}
-              style={{alignItems: 'center'}}
-            />
-          </TouchableOpacity>
-        </View>
-      </View>
-    );
-  };
-  const FotterComponent = () => {
-    return (
-      <View style={{flexDirection: 'row'}}>
-        <View style={{flex: 1, marginRight: 5}}>
-          <Button
-            icon={
-              <Icon
-                name="angle-double-left"
-                size={25}
-                style={{marginHorizontal: 10}}
-                color="#9ce067"
-              />
-            }
-            title="PreView"
-            titleStyle={{fontSize: 20}}
-            buttonStyle={{backgroundColor: '#138037'}}
-            disabled={page <= 0 ? true : false}
-            onPress={() => {
-              if (page > 0) setPage(page - 1);
-            }}
-          />
-        </View>
-        <View style={{flex: 1, marginLeft: 5}}>
-          <Button
-            icon={
-              <Icon
-                name="angle-double-right"
-                size={25}
-                style={{marginHorizontal: 10}}
-                color="#9ce067"
-              />
-            }
-            title="Next"
-            iconRight
-            titleStyle={{fontSize: 20}}
-            buttonStyle={{backgroundColor: '#138037'}}
-            disabled={totalCount / 5 > page + 1 ? false : true}
-            onPress={() => {
-              if (page + 1 < totalCount / 5) setPage(page + 1);
-            }}
-          />
-        </View>
-      </View>
-    );
-  };
   async function initData() {
     await getStore();
     // await getShipping();
@@ -216,7 +120,7 @@ const ShippingPage = ({navigation}) => {
             <Button
               icon={<Icon name="refresh" color="#8ed9f5" size={20} />}
               onPress={() => {
-                getShipping()
+                getShipping();
               }}
             />
           </View>
@@ -294,25 +198,19 @@ const ShippingPage = ({navigation}) => {
             </Text>
           )}
         </View>
-
-        <SafeAreaView style={styles.container}>
-          {isLoadingShipping ? (
-            <ActivityIndicator
-              size="large"
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}></ActivityIndicator>
-          ) : (
-            <FlatList
-              data={shippingDatas}
-              renderItem={RenderItem}
-              keyExtractor={(item) => item.Id}
-              ListFooterComponent={FotterComponent}
-            />
-          )}
-        </SafeAreaView>
+        <RenderListItem
+          data={shippingDatas}
+          isLoading={isLoadingShipping}
+          viewPage={page}
+          totalData={totalCount}
+          changeUp={() => {
+            if (page + 1 < totalCount / 5) setPage(page + 1);
+          }}
+          changeDown={() => {
+            if (page > 0) setPage(page - 1);
+          }}
+          navigation={navigation}
+        />
       </View>
     </View>
   );

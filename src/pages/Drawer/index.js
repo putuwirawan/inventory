@@ -83,13 +83,22 @@ export default function DrawerContent(props) {
 
             <DrawerItem
               icon={({color, size}) => (
-                <Icon name="car" color={color} size={size} />
+                <Icon name="ferry" color={color} size={size} />
               )}
               label="Shipping"
               onPress={() => {
                 props.navigation.navigate('Shipping');
               }}
             />
+             <DrawerItem
+              icon={({color, size}) => (
+                <Icon name="book-open-outline" color={color} size={size} />
+              )}
+              label="Report"
+              onPress={() => {
+                props.navigation.navigate('Report');
+              }}
+            />           
           </Drawer.Section>
 
           <Drawer.Section title="Preference">
