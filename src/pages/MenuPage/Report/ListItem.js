@@ -13,14 +13,14 @@ import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // import {Button} from 'react-native-elements';
-import styles from './Style';
+import styles from '../Shipping/Style';
 
 function RenderListItem(props) {
   const {colors} = useTheme();
+
   const RenderItem = ({item}) => {
     return (
       <View
-        key={item.Id}
         style={[
           styles.action,
           {borderBottomWidth: 1, borderBottomColor: '#3db8d1'},
@@ -33,20 +33,19 @@ function RenderListItem(props) {
             ]}>
             Shipping : {item.ShippingNumber}
           </Text>
-          <Text style={{color: colors.text}}>Sender: {item.Sender}</Text>
+
           <Text style={{color: colors.text}}>Courir: {item.Courier}</Text>
         </View>
         <View style={{flex: 1, alignItems: 'flex-end', paddingRight: 5}}>
-          <Text style={[styles.textSubHeader, {color: colors.text}]}></Text>
-          <Text style={{color: colors.text}}> {item.TotalQty} Pcs</Text>
-          <Text style={{color: colors.text}}>
-            By : {item.StrShipmentMethod}
+          <Text style={[styles.textSubHeader, {color: colors.text}]}>
+            {item.Brand}
           </Text>
+          <Text style={{color: colors.text}}>{item.Qty} Pcs</Text>
         </View>
-        <View style={{width: 30, justifyContent: 'center', padding: 2}}>
+        <View style={{width: 20, justifyContent: 'center', padding: 2}}>
           <TouchableOpacity
             onPress={() => {
-             props.navigation.navigate('DetailShipping', {itemDetail: item});
+              props.navigation.navigate('DetailReport', {itemDetail: item});
             }}>
             <Icon
               name="caret-right"
@@ -93,7 +92,11 @@ function RenderListItem(props) {
             iconRight
             titleStyle={{fontSize: 20}}
             buttonStyle={{backgroundColor: '#138037'}}
-            disabled={props.totalData / 5 > props.viewPage + 1 ? false : true}
+            disabled={
+              props.data.totalFiltered / props.take > props.viewPage + 1
+                ? false
+                : true
+            }
             onPress={props.changeUp}
           />
         </View>
@@ -113,9 +116,9 @@ function RenderListItem(props) {
           }}></ActivityIndicator>
       ) : (
         <FlatList
-          data={props.data}
+          data={props.data.data}
           renderItem={RenderItem}
-          keyExtractor={(item) => item.Id}
+          keyExtractor={(item,index) => `${item.ShippingNumber}_${index}` }
           ListFooterComponent={FotterComponent}
         />
         // ListFooterComponent={FotterComponent}

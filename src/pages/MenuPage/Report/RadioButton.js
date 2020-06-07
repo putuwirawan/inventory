@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {View, Text} from 'react-native';
 import {useTheme} from '@react-navigation/native';
 import RadioForm, {
@@ -12,21 +12,13 @@ import styles from './Style';
 export default function RadioButtonx(props) {
     const {colors} = useTheme();
   return (
-    <View style={[styles.container]}>
+    <View style={{height:35}}>
       <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          borderWidth: 1,
-          borderColor: colors.text,
-          borderRadius: 10,
-          padding: 5,
-          margin: 5,
-        }}>
+        style={[styles.section_Radio,{borderColor: colors.text,}]}>
         <View
           style={{
             alignItems: 'flex-start',
-            height: 20,
+            height: 15,
             justifyContent: 'center',
             flex: 1,
           }}>
@@ -41,7 +33,7 @@ export default function RadioButtonx(props) {
         <View
           style={{
             alignItems: 'center',
-            height: 20,
+            height: 15,
             justifyContent: 'center',
           }}>
           <RadioForm

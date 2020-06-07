@@ -33,7 +33,7 @@ const ReportStackScreen = ({navigation}) => {
       <ReportStack.Screen
         name="DetailReport"
         component={DetailReport}
-        options={{ title:'Detail Shipping'}}
+        options={{ title:'Detail Report'}}
         />
     </ReportStack.Navigator>
   );
