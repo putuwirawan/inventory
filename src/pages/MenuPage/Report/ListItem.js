@@ -18,14 +18,19 @@ import styles from '../Shipping/Style';
 function RenderListItem(props) {
   const {colors} = useTheme();
 
-  const RenderItem = ({item}) => {
+  const RenderItem = ({item, index}) => {
     return (
       <View
         style={[
           styles.action,
           {borderBottomWidth: 1, borderBottomColor: '#3db8d1'},
         ]}>
-        <View style={{flex: 1}}>
+        <View style={{width: 30}}>
+          <Text style={{color: colors.text}}>
+            {props.viewPage * props.take + 1 + index}
+          </Text>
+        </View>
+        <View style={{flex: 1}} >
           <Text
             style={[
               styles.textSubHeader,
@@ -78,6 +83,25 @@ function RenderListItem(props) {
             onPress={props.changeDown}
           />
         </View>
+        <View
+          style={{
+            flex: 1,
+            marginLeft: 5,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Text style={{textAlign: 'center', fontSize: 17, color: colors.text}}>
+            {props.data.totalFiltered <= 0
+              ? null
+              : props.viewPage * props.take + 1}{' '}
+            -
+            {props.viewPage * props.take + props.take <=
+            props.data.totalFiltered
+              ? props.viewPage * props.take + props.take
+              : props.data.totalFiltered}{' '}
+            of {props.data.totalFiltered} Record
+          </Text>
+        </View>
         <View style={{flex: 1, marginLeft: 5}}>
           <Button
             icon={
@@ -116,9 +140,10 @@ function RenderListItem(props) {
           }}></ActivityIndicator>
       ) : (
         <FlatList
+         
           data={props.data.data}
           renderItem={RenderItem}
-          keyExtractor={(item,index) => `${item.ShippingNumber}_${index}` }
+          keyExtractor={(item, index) => `${item.ShippingNumber}_${index}`}
           ListFooterComponent={FotterComponent}
         />
         // ListFooterComponent={FotterComponent}

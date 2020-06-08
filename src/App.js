@@ -1,6 +1,6 @@
 import 'react-native-gesture-handler';
 import React, {useEffect} from 'react';
-import {View, ActivityIndicator} from 'react-native';
+import {View, ActivityIndicator, YellowBox} from 'react-native';
 import {
   NavigationContainer,
   DarkTheme as NavigationDarkTheme,
@@ -49,6 +49,11 @@ import ReportStackScreen from './pages/MenuPage/Report';
 const Drawer = createDrawerNavigator();
 
 function App() {
+  YellowBox.ignoreWarnings([
+    'Require cycle:',
+    'Warning: componentWillUpdate has been renamed',
+    'Warning: componentWillReceiveProps has been renamed'
+  ]);
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
 
   const initialLoginState = {

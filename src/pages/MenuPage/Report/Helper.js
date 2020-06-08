@@ -9,7 +9,7 @@ export const GetReport = async ({params: params, body: body}) => {
   let totalPackage = 0;
   let totalQty = 0;
 
-   fetch(
+ await  fetch(
     // `http://inventoryapi.planetsurf.id/api/v1/Reports/GetReports?startDate=2020-03-24&endDate=2020-03-24&dateBy=${params.dateBy}&courier=${params.courier}&brand=${params.brand}&status=${params.statusShipping}&store=${params.store}`,
     `http://inventoryapi.planetsurf.id/api/v1/Reports/GetReports?startDate=${params.startDate}&endDate=${params.endDate}&dateBy=${params.dateBy}&courier=${params.courier}&brand=${params.brand}&status=${params.status}&store=${params.store}`,
     {

@@ -3,7 +3,7 @@ import qs from 'qs';
 
 export const GetCourier = async ({search: search, take: take, skip: skip}) => {
   const token = await AsyncStorage.getItem('userToken');
-  let data = [];
+  let data = [{value:'', label:'All'}];
 
   await fetch(
     'http://inventoryapi.planetsurf.id/api/v1/Couriers/GetCourierCodes',
