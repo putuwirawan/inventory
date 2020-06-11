@@ -158,7 +158,7 @@ function App() {
       } catch (e) {
         console.log(e);
       }
-      dispatch({type: 'REGISTER', token: userToken});
+      dispatch({type: 'LOGIN', token: userToken});
     }, 1000);
   }, []);
 

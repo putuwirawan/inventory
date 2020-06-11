@@ -11,12 +11,13 @@ import {useTheme} from '@react-navigation/native';
 import {FlatList} from 'react-native-gesture-handler';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-
+import * as GlobalFunction from '../../../assets/Helper/GlobalFunction';
 // import {Button} from 'react-native-elements';
 import styles from '../Shipping/Style';
 
 function RenderListItem(props) {
   const {colors} = useTheme();
+
 
   const RenderItem = ({item, index}) => {
     return (
@@ -25,12 +26,21 @@ function RenderListItem(props) {
           styles.action,
           {borderBottomWidth: 1, borderBottomColor: '#3db8d1'},
         ]}>
-        <View style={{width: 30}}>
-          <Text style={{color: colors.text}}>
+        <View
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            backgroundColor: '#7edbf2',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginRight:10
+          }}>
+          <Text style={{color: '#7609db', fontSize:17, fontWeight:'800'}}>
             {props.viewPage * props.take + 1 + index}
           </Text>
         </View>
-        <View style={{flex: 1}} >
+        <View style={{flex: 1}}>
           <Text
             style={[
               styles.textSubHeader,
@@ -53,7 +63,7 @@ function RenderListItem(props) {
               props.navigation.navigate('DetailReport', {itemDetail: item});
             }}>
             <Icon
-              name="caret-right"
+              name="angle-right"
               color={colors.text}
               size={40}
               style={{alignItems: 'center'}}
@@ -64,6 +74,7 @@ function RenderListItem(props) {
     );
   };
   const FotterComponent = () => {
+    const numPage = GlobalFunction.roundUp(props.data.totalFiltered / props.take, 0);
     return (
       <View style={{flexDirection: 'row'}}>
         <View style={{flex: 1, marginRight: 5}}>
@@ -90,17 +101,10 @@ function RenderListItem(props) {
             alignItems: 'center',
             justifyContent: 'center',
           }}>
-          <Text style={{textAlign: 'center', fontSize: 17, color: colors.text}}>
-            {props.data.totalFiltered <= 0
-              ? null
-              : props.viewPage * props.take + 1}{' '}
-            -
-            {props.viewPage * props.take + props.take <=
-            props.data.totalFiltered
-              ? props.viewPage * props.take + props.take
-              : props.data.totalFiltered}{' '}
-            of {props.data.totalFiltered} Record
-          </Text>
+
+          {numPage>0? <Text style={{textAlign: 'center', fontSize: 17, color: colors.text}}>
+            Page {props.viewPage+1} of ({numPage})
+          </Text> : null}
         </View>
         <View style={{flex: 1, marginLeft: 5}}>
           <Button
@@ -140,7 +144,6 @@ function RenderListItem(props) {
           }}></ActivityIndicator>
       ) : (
         <FlatList
-         
           data={props.data.data}
           renderItem={RenderItem}
           keyExtractor={(item, index) => `${item.ShippingNumber}_${index}`}

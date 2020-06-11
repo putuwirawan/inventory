@@ -16,6 +16,7 @@ import RenderListItem from './ListItem';
 import styles from './Style';
 import RadioButton from './RadioButton';
 import DatePicker from './DatePicker';
+import SearchTemplate from './Search';
 
 export default function Report({navigation}) {
   const {colors} = useTheme();
@@ -53,14 +54,21 @@ export default function Report({navigation}) {
   //   setToken(xx);
   // };
   const getStores = async () => {
-    let response = await GetStore();
-    setStores(response);
-    setStore(response[0].value);
+    try {
+      await GetStore().then((response) => {
+        setStores(response);
+        setStore(response[0].value);
+      });
+    } catch (error) {}
   };
   const getCouriers = async () => {
-    let response = await GetCourier({search: '', take: '', skip: 0});
-
-    setCouriers(response);
+    try {
+      await GetCourier({search: '', take: '', skip: 0}).then((response) => {
+        setCouriers(response);
+      });
+    } catch (error) {
+      console.log(error);
+    }
   };
   const getBrands = async () => {
     let response = await GetBrand({search: '', take: '', skip: 0});
@@ -174,7 +182,7 @@ export default function Report({navigation}) {
             value="Select Store"
             animationDuration={500}
             data={stores}
-            fontSize={15}
+            fontSize={14}
             dropdownOffset={{top: 0, left: 0}}
             dropdownPosition={0}
             baseColor={colors.text}
@@ -189,7 +197,7 @@ export default function Report({navigation}) {
             value="Select Courier"
             animationDuration={500}
             data={couriers}
-            fontSize={15}
+            fontSize={13}
             dropdownOffset={{top: 0, left: 0}}
             dropdownPosition={0}
             baseColor={colors.text}
@@ -204,7 +212,7 @@ export default function Report({navigation}) {
             value="Select Brand"
             animationDuration={500}
             data={brands}
-            fontSize={15}
+            fontSize={14}
             dropdownOffset={{top: 0, left: 0}}
             dropdownPosition={0}
             baseColor={colors.text}
@@ -249,43 +257,16 @@ export default function Report({navigation}) {
                 </Text>
               </View>
             </View>
-            <View
-              style={{
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                margin: 3,
-              }}>
-              <View style={{alignItems: 'center', justifyContent: 'center'}}>
-                <Button
-                  icon={<Icon name="refresh" color="#8ed9f5" size={20} />}
-                  onPress={() => {
-                    getReport();
-                    setPage(0);
-                  }}
-                />
-              </View>
-              <View style={{flexDirection: 'row'}}>
-                <Icon
-                  name="search"
-                  color={colors.text}
-                  size={20}
-                  style={{
-                    padding: 5,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                />
-
-                <TextInput
-                  placeholder="Search"
-                  style={[styles.textSearch, {color: colors.text, width: 250}]}
-                  onChangeText={(val) => {
-                    setSearch(val);
-                    setPage(0);
-                  }}
-                />
-              </View>
-            </View>
+            <SearchTemplate
+                value={search}
+                onChangeText={(val) => {
+                  setSearch(val);
+                }}
+                onrefresh={() => {
+                  getReport();
+                }}
+              />
+            
           </View>
         </View>
 

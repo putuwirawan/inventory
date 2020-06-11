@@ -1,7 +1,7 @@
 import {StyleSheet, Dimensions, Platform} from 'react-native';
 
 const {height} = Dimensions.get('screen');
-const height_logo = height * 0.2;
+
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 2,
     paddingBottom: 5,
   },
-  section_DatePicker: {justifyContent: 'space-between', flexDirection: 'row'},
+  section_DatePicker: {justifyContent: 'space-around', flexDirection: 'row'},
   section_center: {
     flex: 1,
     flexDirection: 'row',
@@ -22,11 +22,13 @@ const styles = StyleSheet.create({
   },
   container_DropDown :{
     width: 180,
-    height: 55,
+    height: 50,
     marginHorizontal: 10,
     borderRadius: 10,
     borderWidth: 1,
     backgroundColor: '#17ad94',
+    
+   
   },
   calenderStyle:{
     flexDirection: 'row',
@@ -49,16 +51,16 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   section_DropDown: {
-    justifyContent: 'space-between',
+    justifyContent: 'space-evenly',
     flexDirection: 'row',
     height: 50,
     marginVertical:5,
   },
   dropDownStyle:{
-    width: '30%',
+    width: '32%',
     borderWidth: 1,
     borderRadius: 10,
-    height: 35,
+    height: 33,
     padding: 2,
   },
   textCalender: {
