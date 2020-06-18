@@ -6,6 +6,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Shipping from './ShippingPage';
 import DetailShipping from './DetailShipping';
 
+
 const ShippingStack = createStackNavigator();
 
 const ShippingStackScreen = ({navigation}) => {

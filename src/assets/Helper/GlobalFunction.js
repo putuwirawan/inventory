@@ -12,13 +12,26 @@ function toLocalDateTime(date) {
   return local;
 }
 function toLocalDate(date) {
-  const stilUtc = moment.utc(date);
-  var local = moment(stilUtc).local().format('DD/MM/YYYY');
-
+  const stilUtc = moment(date);
+  var local = moment(stilUtc).format('DD/MM/YYYY');
   return local;
+}
+function toLocalDateOffset(date, offset) {
+  const local = moment(date).format('YYYY/MM/DD');
+  let nDate = moment(local).format('YYYY/MM/DD');
+  if (offset >= 0) {
+    nDate = moment(local, 'YYYY/MM/DD')
+      .add(offset, 'days')
+      .format('YYYY/MM/DD');
+  } else {
+    nDate = moment(local, 'YYYY/MM/DD')
+      .subtract(Math.abs(offset), 'days')
+      .format('YYYY/MM/DD');
+  }
+  return nDate;
 }
 const utcDateTime = (dateTime) => {
   const date = moment.utc(dateTime).format('DD/MM/YYYY');
   return date;
 };
-export {roundUp, toLocalDateTime, toLocalDate, utcDateTime};
+export {roundUp, toLocalDateTime, toLocalDate, utcDateTime, toLocalDateOffset};

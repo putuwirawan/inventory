@@ -35,7 +35,7 @@ export default function ChangeParameter(props) {
             placeholder="Search"
             onChangeText={props.onChangeText}
             value={props.data.textSearch}
-            inputContainerStyle={{height:30, backgroundColor:'#505751'}}
+            inputContainerStyle={{height:30, backgroundColor:'#575b61'}}
             containerStyle={{backgroundColor:colors.background}}
             
           />

@@ -21,6 +21,11 @@ function RenderListItem(props) {
 
   const RenderItem = ({item, index}) => {
     return (
+      <TouchableOpacity
+      onPress={() => {
+        props.navigation.navigate('DetailReport', {itemDetail: item});
+      }}>
+ 
       <View
         style={[
           styles.action,
@@ -71,6 +76,7 @@ function RenderListItem(props) {
           </TouchableOpacity>
         </View>
       </View>
+      </TouchableOpacity>
     );
   };
   const FotterComponent = () => {

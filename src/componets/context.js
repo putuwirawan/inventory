@@ -1,6 +1,8 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
 
-export const AuthContext = React.createContext();
+export const AuthContext = React.createContext({
+    isLandscape: true,
+  });
 
 

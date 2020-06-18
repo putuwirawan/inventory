@@ -21,7 +21,7 @@ export default function DrawerContent(props) {
   const {signOut, toggleTheme} = React.useContext(AuthContext);
 
   const getUserLogin = async () => {
-    const user = await AsyncStorage.getItem('username');
+    const user = await AsyncStorage.getItem('userName');
     setUserLogin(user);
   };
 
@@ -68,10 +68,10 @@ export default function DrawerContent(props) {
               )}
               label="Home"
               onPress={() => {
-                props.navigation.navigate('Home');
+                props.navigation.navigate('HomePage');
               }}
             />
-            <DrawerItem
+            {/* <DrawerItem
               icon={({color, size}) => (
                 <Icon name="account-box-outline" color={color} size={size} />
               )}
@@ -79,7 +79,7 @@ export default function DrawerContent(props) {
               onPress={() => {
                 props.navigation.navigate('Profile');
               }}
-            />
+            /> */}
 
             <DrawerItem
               icon={({color, size}) => (

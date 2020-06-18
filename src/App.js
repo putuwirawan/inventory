@@ -17,34 +17,13 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 import {AuthContext} from './componets/context';
 import MainTabScreen from './pages/MainTabscreen';
+import HomeStackScreen from './pages/Home'
 import DrawerContent from './pages/Drawer';
 import LoginStackScreen from './pages/Login';
 import ProfileStackScreen from './pages/MenuPage/Profile';
 import ShippingStackScreen from './pages/MenuPage/Shipping';
 import ReportStackScreen from './pages/MenuPage/Report';
-
-// import {YellowBox} from 'react-native';
-// import _ from 'lodash';
-
-// YellowBox.ignoreWarnings([
-//   'componentWillReceiveProps',
-//   'componentWillUpdate',
-//   'Require cycle',
-// ]);
-// const _console = _.clone(console);
-// console.warn = (message) => {
-//   if (message.indexOf('componentWillReceiveProps') <= -1) {
-//     _console.warn(message);
-//   }
-//   if (message.indexOf('componentWillUpdate') <= -1) {
-//     _console.warn(message);
-//   }
-//   if (message.indexOf('Require cycle') <= -1) {
-//     _console.warn(message);
-//   }
-// };
-
-
+import {constant} from 'lodash';
 
 const Drawer = createDrawerNavigator();
 
@@ -52,9 +31,10 @@ function App() {
   YellowBox.ignoreWarnings([
     'Require cycle:',
     'Warning: componentWillUpdate has been renamed',
-    'Warning: componentWillReceiveProps has been renamed'
+    'Warning: componentWillReceiveProps has been renamed',
   ]);
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
+  const isCancelled = React.useRef(false);
 
   const initialLoginState = {
     isLoading: true,
@@ -123,10 +103,10 @@ function App() {
     () => ({
       signIn: async (foundUser) => {
         const userToken = String(foundUser.access_token);
-        const userName = String(foundUser.userName);
+        const userName = String(foundUser.username);
         try {
           await AsyncStorage.setItem('userToken', userToken);
-          await AsyncStorage.setItem('username', userName);
+          await AsyncStorage.setItem('userName', userName);
         } catch (e) {
           console.log(e);
         }
@@ -135,7 +115,7 @@ function App() {
       signOut: async () => {
         try {
           await AsyncStorage.removeItem('userToken');
-          await AsyncStorage.removeItem('username');
+          await AsyncStorage.removeItem('userName');
         } catch (e) {
           console.log(e);
         }
@@ -150,16 +130,32 @@ function App() {
     [],
   );
 
-  useEffect(() => {
-    setTimeout(async () => {
-      let userToken = null;
+  const checkUser = async () => {
+    let userToken = null;
+
+    if (!isCancelled.current) {
       try {
         userToken = await AsyncStorage.getItem('userToken');
       } catch (e) {
         console.log(e);
       }
-      dispatch({type: 'LOGIN', token: userToken});
-    }, 1000);
+      dispatch({type: 'REGISTER', token: userToken});
+    }
+  };
+  useEffect(() => {
+    checkUser();
+    return () => {
+      isCancelled.current = true;
+    };
+    // setTimeout(async () => {
+    //   let userToken = null;
+    //   try {
+    //     userToken = await AsyncStorage.getItem('userToken');
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    //   dispatch({type: 'REGISTER', token: userToken});
+    // }, 1000);
   }, []);
 
   if (loginState.isLoading) {
@@ -176,7 +172,7 @@ function App() {
           {loginState.userToken !== null ? (
             <Drawer.Navigator
               drawerContent={(props) => <DrawerContent {...props} />}>
-              <Drawer.Screen name="HomeTab" component={MainTabScreen} />
+              <Drawer.Screen name="HomePage" component={HomeStackScreen} />
               <Drawer.Screen name="Profile" component={ProfileStackScreen} />
               <Drawer.Screen name="Shipping" component={ShippingStackScreen} />
               <Drawer.Screen name="Report" component={ReportStackScreen} />

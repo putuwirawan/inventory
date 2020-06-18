@@ -1,35 +1,37 @@
 /* eslint-disable prettier/prettier */
 import React from 'react';
-import {Text, Button, View, StyleSheet, StatusBar} from 'react-native';
-import {useTheme} from '@react-navigation/native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {createStackNavigator} from '@react-navigation/stack';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-const Home = ({navigation}) => {
-  const {colors} = useTheme();
-  const theme = useTheme();
+import HomePage from './HomePage';
+
+const HomeStack = createStackNavigator();
+
+const HomeStackScreen = ({navigation}) => {
   return (
-    <View style={style.container}>
-      <StatusBar
-        backgroundColor="#009387"
-        barStyle={theme.dark ? 'light-content' : 'dark-content'}
-      />
-      <Text style={{color: colors.text}}>Home Screen</Text>
-      <Button
-        title="Go to Details"
-        onPress={() => {
-          /* 1. Navigate to the Details route with params */
-          navigation.navigate('Detail');
+    <HomeStack.Navigator
+      screenOptions={{
+        headerStyle: {backgroundColor: '#009387'},
+        headerTintColor: '#fff',
+        headerTitleStyle: {fontWeight: 'bold'},
+      }}>
+      <HomeStack.Screen
+        name="HomePage"
+        component={HomePage}
+        options={{
+          title: 'Welcome',
+          headerLeft: () => (
+            <Icon.Button
+              name="ios-menu"
+              size={30}
+              backgroundColor="#009387"
+              onPress={() => navigation.openDrawer()}
+            />
+          ),
         }}
       />
-    </View>
+    </HomeStack.Navigator>
   );
 };
-const style = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
-export default Home;
+
+export default HomeStackScreen;

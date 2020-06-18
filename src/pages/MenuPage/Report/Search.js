@@ -23,7 +23,8 @@ export default function SearchTemplate(props) {
           placeholder="Search"
           onChangeText={props.onChangeText}
           value={props.value}
-          inputContainerStyle={{height: 30, backgroundColor: colors.background}}
+          inputContainerStyle={{height:30, backgroundColor:'#575b61'}}
+          containerStyle={{backgroundColor:colors.background}}
         />
       </View>
     </View>

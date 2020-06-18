@@ -5,7 +5,6 @@ import {Dropdown} from 'react-native-material-dropdown';
 import moment from 'moment';
 import {Button} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {TextInput} from 'react-native-paper';
 // Import Data
 import {GetStore} from '../../../assets/Helper/GetStore';
 import {GetCourier} from '../../../assets/Helper/GetCourier';
@@ -49,6 +48,7 @@ export default function Report({navigation}) {
   const [page, setPage] = useState(0);
 
   const take = 10;
+  const isCancelled = React.useRef(false);
   // const katul = async () => {
   //   let xx = await Helper.NgalihToken();
   //   setToken(xx);
@@ -93,8 +93,10 @@ export default function Report({navigation}) {
       sort: 'store',
       order: 'true',
     };
+
     try {
       let response = await GetReport({params: params, body: body});
+
       setReports(response);
     } catch (error) {
       console.log(error);
@@ -123,6 +125,10 @@ export default function Report({navigation}) {
     getStores();
     getCouriers();
     getBrands();
+    return () => {
+      isCancelled.current = true;
+      setReports('');
+    };
   }, []);
   useEffect(() => {
     getReport();
@@ -132,7 +138,6 @@ export default function Report({navigation}) {
     store,
     dateBySelect,
     statusShipping,
-    store,
     courier,
     brand,
     page,
@@ -190,7 +195,8 @@ export default function Report({navigation}) {
             selectedItemColor="#33654C"
             containerStyle={[styles.dropDownStyle, {borderColor: colors.text}]}
             onChangeText={(selectValue) => {
-              setStore(selectValue);
+            setStore(selectValue);
+             
             }}
           />
           <Dropdown
@@ -258,15 +264,14 @@ export default function Report({navigation}) {
               </View>
             </View>
             <SearchTemplate
-                value={search}
-                onChangeText={(val) => {
-                  setSearch(val);
-                }}
-                onrefresh={() => {
-                  getReport();
-                }}
-              />
-            
+              value={search}
+              onChangeText={(val) => {
+                setSearch(val);
+              }}
+              onrefresh={() => {
+                getReport();
+              }}
+            />
           </View>
         </View>
 
