@@ -34,7 +34,7 @@ export default function DashboardView(props) {
           }}>
           {props.name}
         </Text>
-        <Text>{props.date}</Text>
+        <Text style={{fontSize:15,fontStyle:'italic'}}>{props.date}</Text>
       </View>
       <View style={{flex: 1, justifyContent: 'space-between'}}>
         <View
@@ -48,7 +48,7 @@ export default function DashboardView(props) {
             backgroundColor: props.color ? props.color : '#a1f088',
           }}>
           <LinearGradient colors={['#8acfc2', '#01ab9d']} style={styles.signIn}>
-            <Text style={{fontSize: 18, fontWeight: 'bold'}}>
+            <Text style={{fontSize: 17, fontWeight: 'bold'}}>
               {props.qty} PCS
             </Text>
           </LinearGradient>

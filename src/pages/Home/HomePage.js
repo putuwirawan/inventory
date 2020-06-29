@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, Text} from 'react-native';
+import {View, } from 'react-native';
 
 import {Dropdown} from 'react-native-material-dropdown';
 import Header from './Header';
@@ -7,8 +7,12 @@ import DashboardView from './DashboardView';
 import {GetStore} from '../../assets/Helper/GetStore';
 import * as ApiHelper from './ApiHelper';
 import moment from 'moment';
+import {useTheme} from '@react-navigation/native';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 export default function HomePage() {
+  const paperTheme = useTheme();
+  const {colors} = useTheme();
   const [stores, setStores] = useState([]);
   const [store, setStore] = useState('');
   const [dataDashboard, setDashboard] = useState(null);
@@ -30,6 +34,7 @@ export default function HomePage() {
       response = await GetStore();
       await setStores(response);
     }
+   
   };
   useEffect(() => {
     getStore();
@@ -45,17 +50,19 @@ export default function HomePage() {
       <View
         style={{
           flex: 2,
-          backgroundColor: '#676b67',
+          backgroundColor: colors.background,
         }}>
         <View style={{height: 35, margin: 5}}>
           <Dropdown
             value="Select Store"
+            textColor={colors.text}
             animationDuration={500}
             data={stores}
             fontSize={18}
             dropdownOffset={{top: 0, left: 0}}
             selectedItemColor="#33654C"
-            containerStyle={{width: '40%'}}
+            containerStyle={{width: '50%', backgroundColor:'#a2aaaf', borderRadius:10, paddingHorizontal:10}}
+         
             onChangeText={async (val) => {
               await setStore(val);
               await getDashboard(val);

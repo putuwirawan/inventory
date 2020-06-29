@@ -150,6 +150,7 @@ const SignInScreen = ({navigation}) => {
             autoCapitalize="none"
             onChangeText={(val) => textInputChange(val)}
             onEndEditing={(e) => handleValidUser(e.nativeEvent.text)}
+            placeholderTextColor={colors.text}
           />
           {data.check_textInputChange ? (
             <Animatable.View animation="bounceIn">
@@ -169,6 +170,7 @@ const SignInScreen = ({navigation}) => {
           <Feather name="lock" color={colors.text} size={20} />
           <TextInput
             secureTextEntry={data.secureTextEntry ? true : false}
+            placeholderTextColor={colors.text}
             placeholder="Your Password"
             style={[styles.textInput,{color:colors.text}]}
             autoCapitalize="none"
@@ -202,14 +204,14 @@ const SignInScreen = ({navigation}) => {
               <Text style={[styles.textSign, {color: '#fff'}]}> Sign In </Text>
             </LinearGradient>
           </TouchableOpacity>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() => navigation.navigate('SignUpScreen')}
             style={[
               styles.signIn,
               {borderColor: '#009387', borderWidth: 1, marginTop: 15},
             ]}>
             <Text style={[styles.textSign, {color: '#009387'}]}> Sign Up </Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </Animatable.View>
     </View>
