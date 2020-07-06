@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 import Shipping from './ShippingPage';
 import DetailShipping from './DetailShipping';
-
+import PrintPage from './Print';
 
 const ShippingStack = createStackNavigator();
 
@@ -36,6 +36,11 @@ const ShippingStackScreen = ({navigation}) => {
         component={DetailShipping}
         options={{ title:'Detail Shipping'}}
         />
+       <ShippingStack.Screen
+        name="PrintPage"
+        component={PrintPage}
+        options={{ title:'Print'}}
+        />       
     </ShippingStack.Navigator>
   );
 };

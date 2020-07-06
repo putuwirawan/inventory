@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-community/async-storage';
+import qs from 'qs';
 
 export const GetShipping = async ({params: params}) => {
   const token = await AsyncStorage.getItem('userToken');
@@ -44,4 +45,35 @@ export const GetShipping = async ({params: params}) => {
     totalFiltered: totalFiltered,
   };
   return res;
+};
+
+export const ReceiveShipping = async ({params: params}) => {
+  const token = await AsyncStorage.getItem('userToken');
+  let data;
+
+  await fetch(
+    `http://inventoryapi.planetsurf.id/api/v1/Shippings/Receive?id=${params.id}`,
+
+    {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer ' + token,
+      },
+      body: JSON.stringify({
+        Id: params.id,
+        TotalPackageReceived: params.koli,
+      }),
+    },
+  )
+    .then((response) => response.json())
+    .then((datas) => {
+      data = datas;
+    })
+    .catch((e) => {
+      console.log(e.toString());
+    });
+
+  return data;
 };

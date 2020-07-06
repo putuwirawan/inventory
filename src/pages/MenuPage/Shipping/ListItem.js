@@ -46,7 +46,7 @@ function RenderListItem(props) {
         }
         containerStyle={{backgroundColor: colors.background}}
         onPress={() => {
-          props.navigation.navigate('DetailShipping', {itemDetail: item});
+          props.navigation.navigate('DetailShipping', {itemDetail: item,shippingStatus: props.shippingStatus,navigations:props.navigation});
         }}
         subtitle={
           <View style={{flexDirection: 'row'}}>

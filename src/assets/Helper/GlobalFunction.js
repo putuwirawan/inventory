@@ -6,6 +6,10 @@ function roundUp(num, precision) {
   var number = Math.ceil(num * precision) / precision;
   return number;
 }
+function roundDown(number, decimals) {
+  decimals = decimals || 0;
+  return ( Math.floor( number * Math.pow(10, decimals) ) / Math.pow(10, decimals) );
+}
 function toLocalDateTime(date) {
   const stilUtc = moment.utc(date);
   var local = moment(stilUtc).local().format('DD/MM/YYYY HH:mm:ss');
@@ -34,4 +38,4 @@ const utcDateTime = (dateTime) => {
   const date = moment.utc(dateTime).format('DD/MM/YYYY');
   return date;
 };
-export {roundUp, toLocalDateTime, toLocalDate, utcDateTime, toLocalDateOffset};
+export {roundUp, toLocalDateTime, toLocalDate, utcDateTime, toLocalDateOffset,roundDown};

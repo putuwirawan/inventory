@@ -32,6 +32,7 @@ function App() {
     'Require cycle:',
     'Warning: componentWillUpdate has been renamed',
     'Warning: componentWillReceiveProps has been renamed',
+    'Non-serializable values were found in the navigation state',
   ]);
   const [isDarkTheme, setIsDarkTheme] = React.useState(false);
   const isCancelled = React.useRef(false);

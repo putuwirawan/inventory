@@ -93,6 +93,7 @@ const ShippingPage = ({navigation}) => {
             if (page > 0) setPage(page - 1);
           }}
           navigation={navigation}
+          shippingStatus={shippingProces}
         />
       </View>
     </View>
